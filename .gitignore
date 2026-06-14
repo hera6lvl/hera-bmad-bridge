@@ -1,6 +1,7 @@
 # Local/runtime
 .hera/bmad-runs/
 *.log
+*.bak
 
 # Secrets
 .env

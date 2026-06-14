@@ -32,6 +32,9 @@ Installed BMAD modules/tools:
 
 - BMad Core
 - BMad Method (`bmm`)
+- Test Architect (`tea`)
+- Creative Innovation Suite (`cis`)
+- BMad Automator (`automator`)
 - Claude Code skill integration (`.claude/skills/bmad-*`)
 
 ## What we are building

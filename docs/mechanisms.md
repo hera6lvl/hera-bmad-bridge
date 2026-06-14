@@ -51,12 +51,19 @@ For non-trivial code changes, the bridge should create a git worktree and run th
 
 Every run creates evidence files under `.hera/bmad-runs/`.
 
-## 7. BMAD review workflows
+## 7. BMAD review and quality workflows
 
-For review, prefer BMAD workflows/tools:
+For review and quality strategy, prefer BMAD workflows/tools:
 
 - `bmad-code-review`;
 - `bmad-review-adversarial-general`;
-- `bmad-review-edge-case-hunter`.
+- `bmad-review-edge-case-hunter`;
+- TEA workflows for risk-based test strategy, traceability, NFR review, ATDD, automation, CI, and test review.
 
 Hera triages findings and decides whether to fix, defer, reject, or ask Vova.
+
+## 8. Creative and automation modules
+
+CIS is available for brainstorming, design thinking, storytelling, innovation strategy, and creative problem solving.
+
+Automator is available as an experimental BMAD module for story automation. It should be treated as a BMAD workflow executor aid, not as a replacement for Hera's acceptance gate.
