@@ -66,4 +66,6 @@ Hera triages findings and decides whether to fix, defer, reject, or ask Vova.
 
 CIS is available for brainstorming, design thinking, storytelling, innovation strategy, and creative problem solving.
 
+BMad Builder is available for creating new BMAD agents, workflows, and modules from a conversation. Hera should use it when extending BMAD itself instead of hand-writing ad hoc workflow structures.
+
 Automator is available as an experimental BMAD module for story automation. It should be treated as a BMAD workflow executor aid, not as a replacement for Hera's acceptance gate.

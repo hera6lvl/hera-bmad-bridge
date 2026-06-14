@@ -11,14 +11,17 @@
 # ─────────────────────────────────────────────────────────────────
 
 [core]
-project_name = "hera-bmad-bridge"
-document_output_language = "ukrainian"
+document_output_language = "english"
 output_folder = "_bmad-output"
 
 [modules.bmm]
 planning_artifacts = "{project-root}/_bmad-output/planning-artifacts"
 implementation_artifacts = "{project-root}/_bmad-output/implementation-artifacts"
 project_knowledge = "{project-root}/docs"
+
+[modules.bmb]
+bmad_builder_output_folder = "{project-root}/skills"
+bmad_builder_reports = "{project-root}/skills/reports"
 
 [modules.tea]
 test_artifacts = "{project-root}/_bmad-output/test-artifacts"

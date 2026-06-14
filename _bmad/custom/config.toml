@@ -7,4 +7,5 @@
 # description = "Prefers short, bulleted PRDs over narrative drafts."
 
 [core]
+project_name = "hera-bmad-bridge"
 document_output_language = "english"
