@@ -1,0 +1,19 @@
+# Local/runtime
+.hera/bmad-runs/
+*.log
+
+# Secrets
+.env
+*.pem
+*.key
+
+# OS/editor
+.DS_Store
+.vscode/
+.idea/
+
+# Node/Python caches
+node_modules/
+__pycache__/
+.pytest_cache/
+.ruff_cache/
