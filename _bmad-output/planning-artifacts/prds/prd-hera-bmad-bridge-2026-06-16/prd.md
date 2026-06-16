@@ -204,6 +204,7 @@ The gate checks `tool.log` and `diff.patch` for evidence of Forbidden Operations
 **Consequences (testable):**
 - Detection of a Forbidden Operation sets `verdict: escalate` and names the operation in `verification.log`.
 - The escalation is surfaced to Hera immediately; Hera escalates to Vova before any further action.
+- v1 post-hoc gate detects only unblocked attempts that produce a `tool.log` trace; operations blocked at the Claude Code permission layer before execution may produce no log entry; full coverage of blocked attempts requires v2 in-flight hooks/adapter logging.
 
 #### FR-12: Test and lint check
 
@@ -335,10 +336,29 @@ The manual bootstrap loop (Hera manually invokes `bmad-help` via a coding tool, 
 
 ## 11. Open Questions
 
-1. **Non-trivial threshold**: What precise rule defines "non-trivial" for Worktree isolation? Suggested rule: any run that writes to implementation artifacts (`.py`, `.ts`, etc.) is non-trivial; documentation-only runs (`.md`, BMAD artifacts) are trivial. Vova to confirm.
-2. **Test/lint command discovery**: How does the gate discover which test/lint commands to run in an arbitrary repo? Strategies: `package.json` scripts, `Makefile`, config file in `.hera/`, or a convention-based lookup.
-3. **`.hera/` gitignore default**: Should the bridge write a `.gitignore` entry for `.hera/bmad-runs/` on first use, or leave it to the repo owner?
-4. **Gate escalation UX**: When `verdict: escalate`, how does Hera surface this to Vova? Options: write to a known file Hera monitors, raise an exception in the calling context, or log to a channel. Needs a decision for UJ-3 to be testable.
+**OQ-1 — v1 adapter scope** *(resolved)*
+Which adapters ship in v1? Resolved by Vova, 2026-06-16: Claude Code only. `auto` resolves to Claude Code. Codex, Gemini, and Antigravity are deferred to v2. See A-5, DL-003, DL-011.
+
+**OQ-2 — Non-trivial threshold** *(open)*
+What precise rule defines "non-trivial" for Worktree isolation? Suggested rule: any run that writes to implementation artifacts (`.py`, `.ts`, etc.) is non-trivial; documentation-only runs (`.md`, BMAD artifacts) are trivial. Vova to confirm. See A-6, DL-004.
+
+**OQ-3 — `bmad_bridge` form factor** *(resolved)*
+Python CLI vs shell script vs importable API? Resolved by Vova, 2026-06-16: Python CLI first; Hermes-native API integration is v2. See A-13, DL-005, DL-011.
+
+**OQ-4 — Test/lint command discovery** *(open)*
+How does the gate discover which test/lint commands to run in an arbitrary repo? Strategies: `package.json` scripts, `Makefile`, config file in `.hera/`, or a convention-based lookup. See A-7, FR-12.
+
+**OQ-5 — ToolRunResult schema format** *(resolved)*
+What format and version contract governs ToolRunResult cross-tool compatibility? Resolved by Vova, 2026-06-16: Python dataclass in code, serialized to YAML in the Run Ledger; JSON Schema deferred until a second adapter or external consumer requires strict cross-tool validation. See A-14, DL-011.
+
+**OQ-6 — `.hera/bmad-runs/` gitignore default** *(resolved)*
+Should the bridge write a `.gitignore` entry for `.hera/bmad-runs/` on first use, or leave it to the repo owner? Resolved by Vova, 2026-06-16: `.hera/bmad-runs/` is gitignored by default. See A-10, DL-006.
+
+**OQ-7 — Forbidden Operation detection timing** *(resolved)*
+Post-hoc (reading `tool.log` after run) vs in-flight (adapter hooks during run)? Resolved by Vova, 2026-06-16: v1 uses post-hoc detection; in-flight hooks deferred to v2. See A-15, FR-11, DL-007, DL-011.
+
+**OQ-8 — Gate escalation UX** *(open)*
+When `verdict: escalate`, how does Hera surface this to Vova? Options: write to a known file Hera monitors, raise an exception in the calling context, or log to a channel. Needs a decision for UJ-3 to be testable. See FR-9, DL-008.
 
 ---
 
@@ -353,7 +373,7 @@ The manual bootstrap loop (Hera manually invokes `bmad-help` via a coding tool, 
 - **A-7 (§4.4 FR-12):** Test/lint command set is configured per-repo or derived from the repo's package manifest; no bridge-level default list.
 - **A-8 (§5):** Hermes Python API integration is v2; not in MVP.
 - **A-9 (§5):** Codex, Gemini, Antigravity adapters are v2. *Confirmed by Vova, 2026-06-16.*
-- **A-10 (§9, Privacy):** `.hera/` is gitignored by default to prevent committing large/sensitive run transcripts.
+- **A-10 (§9, Privacy):** `.hera/bmad-runs/` is gitignored by default to prevent committing large/sensitive run transcripts. *Confirmed by Vova, 2026-06-16.*
 - **A-11 (§9, Cost):** No per-run cost guard in v1; cost monitoring is Hera + Vova's external responsibility.
 - **A-12 (§10):** Claude Code CLI is authenticated and available in the execution environment at bridge invocation time.
 - **A-13 (§10):** Bridge form factor is a Python CLI. *Confirmed by Vova, 2026-06-16.*
